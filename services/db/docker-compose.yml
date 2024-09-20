@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  postgres:
+  postgres_Tinkerspace:
     image: postgres:16-alpine
     restart: "always"
     environment:
@@ -13,7 +13,7 @@ services:
     ports:
       - "5428:5432"
 
-  pgbouncer:
+  pgbouncer_Tinkerspace:
     image: edoburu/pgbouncer:1.18.0
     restart: "always"
     environment:
