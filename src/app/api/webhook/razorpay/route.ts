@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     if (DbEvent?.id) {
       await UpdateFailedCount(DbEvent.id);
-      return NextResponse.json({ message:  }, { status: 200 }); 
+      return NextResponse.json({ success: true }, { status: 200 });
     }
     return NextResponse.json({ success: true }, { status: 200 });
   }
