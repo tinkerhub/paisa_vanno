@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Climate_Crisis,DM_Sans } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 
 const DMsans = DM_Sans({ subsets: ["latin"] });
