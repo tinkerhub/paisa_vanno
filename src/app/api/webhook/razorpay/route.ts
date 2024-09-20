@@ -1,4 +1,8 @@
-import { getEventById } from "@/data/dto/events";
+import {
+  createEventorThrow,
+  getEventById,
+  UpdateFailedCount,
+} from "@/data/dto/events";
 import { handlePaymentCapturedEvent } from "@/lib/handlers/handlePaymentCapturedEvent";
 import { generateSignature } from "@/lib/utils";
 import { headers } from "next/headers";
@@ -27,8 +31,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: false }, { status: 200 });
   }
 
-  // Insert the event into data-base
-
   // check whether the event is already in database
   let DbEvent = await getEventById(eventId);
   switch (DbEvent?.status) {
@@ -45,20 +47,55 @@ export async function POST(request: NextRequest) {
         );
       }
     }
-    case "PENDING": {
+    case "PROCESSING": {
       console.info(
         "Payment is processing (Multiple request found)",
         "==RAZORPAY"
       );
       return NextResponse.json({ success: false }, { status: 405 });
     }
-  }
 
-  switch (body.event) {
-    case "payment.captured": {
-      return await handlePaymentCapturedEvent({
-        body,
-      });
+    case "PENDING": {
+      // not Implimented.
+      return NextResponse.json({ success: false, status: 430 });
     }
+  }
+  let createEventRetryLoop = DATABASE_CREATE_RETRY_LOOP_STARTS_FROM;
+  let createEventFlag = false;
+  // retry Loop default config.
+  while (
+    createEventRetryLoop <= MAX_DATABASE_CREATE_RETRY_LOOP &&
+    !createEventFlag
+  ) {
+    try {
+      // Insert the event into data-base
+      DbEvent = await createEventorThrow({
+        eventId,
+        status: "PROCESSING",
+      });
+      createEventFlag = true;
+      continue;
+    } catch (error) {
+      createEventRetryLoop++;
+    }
+  }
+  try {
+    if (!DbEvent || !DbEvent?.id) {
+      return NextResponse.json({ success: true }, { status: 425 });
+    }
+    switch (body.event) {
+      case "payment.captured": {
+        return await handlePaymentCapturedEvent({
+          body,
+          event: DbEvent,
+        });
+      }
+    }
+  } catch (error) {
+    if (DbEvent?.id) {
+      await UpdateFailedCount(DbEvent.id);
+      return NextResponse.json({ message:  }, { status: 200 }); 
+    }
+    return NextResponse.json({ success: true }, { status: 200 });
   }
 }

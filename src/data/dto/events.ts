@@ -91,7 +91,7 @@ export async function updateEventToFailed({
     throw new Error("Failed to create");
   }
 }
-export async function UpdateFailedCount(id: string) {
+export async function UpdateFailedCount(id: string, description?: string) {
   try {
     const data = await db.events.update({
       where: {
@@ -101,6 +101,7 @@ export async function UpdateFailedCount(id: string) {
         FailedCount: {
           increment: 1,
         },
+        description: description ?? null,
       },
     });
     return data;

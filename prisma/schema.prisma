@@ -31,9 +31,11 @@ model Events {
 }
 
 model Payments {
-  id            String @id @default(cuid())
-  totalAmount   Int
-  advancePaid   Int
-  discount      Int
-  modeOfPayment String
+  id             String   @id @default(cuid())
+  paymentId      String
+  recievedAmount Int
+  name           String?
+  email          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
