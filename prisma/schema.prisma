@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PROCESSING_STATUS {
+  PENDING
+  PROCESSING
+  FAILED
+  SUCCESS
+}
+
+model Events {
+  id          String            @id @unique @default(cuid())
+  eventId     String
+  description String?
+  FailedCount Int
+  status      PROCESSING_STATUS
+
+  @@index([eventId])
+}
+
+model Payments {
+  id            String @id @default(cuid())
+  totalAmount   Int
+  advancePaid   Int
+  discount      Int
+  modeOfPayment String
+}
