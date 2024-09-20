@@ -1,4 +1,6 @@
+import { getEventById } from "@/data/dto/events";
 import { generateSignature } from "@/lib/utils";
+import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
