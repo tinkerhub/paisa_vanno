@@ -2,17 +2,17 @@ import { displayData } from "@/constants";
 import React from "react";
 
 export default function ProgressBar() {
-  const { currCount } = displayData;
+  const { currCount, totalCount } = displayData;
   return (
-    <div className="bg-[#DADADA] mt-10 mx-auto rounded-full h-20 w-[90%] relative">
-      <div className="bg-[#004BFF] h-20 w-[80.5%] rounded-full"></div>
-      <div className="absolute right-2 -top-32 text-center text-4xl tv:text-7xl font-semibold">
-        <p>⛳️</p>
-        <p>₹1000</p>
+    <div className="bg-[#DADADA] h-20 tv:h-52 w-[90%] mx-auto rounded-full mt-10  relative">
+      <div className="bg-[#004BFF] h-20 tv:h-52 w-[80.5%] rounded-full"></div>
+      <div className="absolute right-0 -top-40 tv:-top-80 text-center text-responsive-num font-bold">
+        <p className="text-7xl tv:text-9xl">⛳️</p>
+        <p>₹{totalCount}</p>
       </div>
 
-      <div className="absolute right-56 text-center font-semibold text-4xl tv:text-7xl">
-        <p className="text-[#004BFF]">▼</p>
+      <div className="absolute right-56 tv:right-[16%] tv:top-60 text-center font-bold text-responsive-num">
+        <p className="text-[#004BFF] text-2xl tv:text-5xl">⬤</p>
         <p>₹{currCount}</p>
       </div>
     </div>
