@@ -3,7 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "@/context/services/TrpcProvider";
 import { Provider } from "react-redux";
-import { store } from "@/lib/store/store";
+import { makeStore } from "@/lib/store/store";
 
 const DMsans = DM_Sans({ subsets: ["latin"] });
 
@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <Provider store={store}>
+        <Provider store={makeStore}>
           <body className={DMsans.className}>{children}</body>
         </Provider>
       </Providers>
