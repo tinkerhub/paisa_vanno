@@ -1,6 +1,6 @@
-import { db } from "@/db";
 import { ErrorLogger } from "@/lib/helpers/PrismaErrorHandler";
 import { PROCESSING_STATUS } from "@prisma/client";
+import { db } from "@/db";
 
 export async function getEventById(eventId: string) {
   try {

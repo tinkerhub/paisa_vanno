@@ -1,4 +1,5 @@
 import { getEventById } from "@/data/dto/events";
+import { handlePaymentCapturedEvent } from "@/lib/handlers/handlePaymentCapturedEvent";
 import { generateSignature } from "@/lib/utils";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
@@ -30,4 +31,34 @@ export async function POST(request: NextRequest) {
 
   // check whether the event is already in database
   let DbEvent = await getEventById(eventId);
+  switch (DbEvent?.status) {
+    case "SUCCESS": {
+      console.info("Db event is sucessfull", "==RAZORPAY");
+      return NextResponse.json({ success: true }, { status: 200 });
+    }
+    case "FAILED": {
+      console.error("Db event is Failed", "==RAZORPAY");
+      if (DbEvent.FailedCount > MAX_EVENT_RETRY_WEBHOOK_COUNT) {
+        return NextResponse.json(
+          { success: false, message: DbEvent.description },
+          { status: 200 }
+        );
+      }
+    }
+    case "PENDING": {
+      console.info(
+        "Payment is processing (Multiple request found)",
+        "==RAZORPAY"
+      );
+      return NextResponse.json({ success: false }, { status: 405 });
+    }
+  }
+
+  switch (body.event) {
+    case "payment.captured": {
+      return await handlePaymentCapturedEvent({
+        body,
+      });
+    }
+  }
 }
