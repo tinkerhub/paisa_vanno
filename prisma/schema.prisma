@@ -31,7 +31,7 @@ model Events {
 }
 
 model Payments {
-  id             String   @id @default(cuid())
+  id             Int      @id @default(autoincrement())
   paymentId      String
   recievedAmount Int
   name           String?

@@ -1,17 +1,16 @@
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
+import { db } from "@/db";
 
 export const appRouter = router({
-  hello: publicProcedure
+  getPayment: publicProcedure
     .input(
       z.object({
         text: z.string(),
       })
     )
-    .query((opts) => {
-      return {
-        greeting: `hello ${opts.input.text}`,
-      };
+    .query(async (opts) => {
+      const data = await db.payments. 
     }),
 });
 

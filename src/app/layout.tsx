@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "@/context/services/TrpcProvider";
 import { Provider } from "react-redux";
 import { makeStore } from "@/lib/store/store";
+import StoreProvider from "@/providers/redux/StoreProvider";
 
 const DMsans = DM_Sans({ subsets: ["latin"] });
 
@@ -20,9 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <Provider store={makeStore}>
+        <StoreProvider>
           <body className={DMsans.className}>{children}</body>
-        </Provider>
+        </StoreProvider>
       </Providers>
     </html>
   );
