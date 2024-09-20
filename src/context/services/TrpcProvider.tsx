@@ -14,10 +14,12 @@ const Providers = ({ children }: PropsWithChildren) => {
         httpBatchLink({
           url: absoluteUrl("/api/trpc"),
         }),
-      ],
+      ],  
     }),
   );
 
+
+  
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
