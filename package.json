@@ -10,12 +10,16 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.56.2",
-    "@trpc/client": "^11.0.0-rc.521",
-    "@trpc/server": "^11.0.0-rc.521",
+    "@trpc/client": "^11.0.0-rc.522",
+    "@trpc/react-query": "^11.0.0-rc.522",
+    "@trpc/server": "^11.0.0-rc.522",
+    "client-only": "^0.0.1",
     "next": "14.2.13",
     "react": "^18",
     "react-dom": "^18",
-    "react-hot-toast": "^2.4.1"
+    "react-hot-toast": "^2.4.1",
+    "server-only": "^0.0.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",

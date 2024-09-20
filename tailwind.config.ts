@@ -14,7 +14,7 @@ const config: Config = {
       fontSize: {
         "responsive-h1": "clamp(1.875rem, 2vw + 1rem, 9rem)", 
         "responsive-h2": "clamp(1rem, 1vw + 0.7rem, 5rem)",
-        "responsive-num": "clamp(2rem, 2vw + 1.5rem, 9rem)",
+        "responsive-num": "clamp(2rem, 2vw + 2rem, 9rem)",
       },
       colors: {
         background: "var(--background)",
