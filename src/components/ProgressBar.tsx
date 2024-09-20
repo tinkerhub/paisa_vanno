@@ -1,8 +1,17 @@
+import { trpc } from "@/app/_trpc/client";
 import { displayData } from "@/constants";
 import React from "react";
 
 export default function ProgressBar() {
   const { currCount, totalCount } = displayData;
+  const { data, fetchNextPage, isFetching, isFetchingNextPage } =
+    trpc.getPaymentTotal.useInfiniteQuery(
+      {},
+      {
+        getNextPageParam: (lastPage) => lastPage?.nextCursor,
+      }
+    );
+
   return (
     <div className="bg-[#DADADA] h-20 tv:h-52 w-[90%] mx-auto rounded-full mt-10  relative">
       <div className="bg-[#004BFF] h-20 tv:h-52 w-[80.5%] rounded-full"></div>
