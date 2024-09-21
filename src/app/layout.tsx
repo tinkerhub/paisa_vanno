@@ -20,9 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <Provider store={makeStore}>
+        {/* <Provider store={makeStore}> */}
           <body className={DMsans.className}>{children}</body>
-        </Provider>
+        {/* </Provider> */}
       </Providers>
     </html>
   );
