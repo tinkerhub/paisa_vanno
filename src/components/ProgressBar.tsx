@@ -4,14 +4,14 @@ import { PaymentContext } from "@/providers/payment";
 import React, { useContext } from "react";
 
 export default function ProgressBar() {
-  let { totalCount } = displayData;
+  let { totalCount, } = displayData;
   const { totalAmount } = useContext(PaymentContext);
   let isExceeded = (totalAmount / totalCount) * 100 >= 100;
   return (
     <div className="bg-[#DADADA]  transition-transform duration-1000  ease-linear max-md:mt-40 max-md:h-16 h-20 tv:h-52 w-[90%] mx-auto rounded-full mt-10 tv:mt-20 relative">
       <div
         style={{
-          width: isExceeded ? `${(totalAmount / totalCount) * 100}%` : "100%",
+          width: !isExceeded ? `${(totalAmount / totalCount) * 100}%` : "100%",
           maxWidth: "100%",
         }}
         className="bg-[#004BFF] max-md:h-16 h-20 tv:h-52  rounded-full transition-transform duration-1000  ease-linear"
@@ -28,7 +28,7 @@ export default function ProgressBar() {
           width: `${(totalAmount / totalCount) * 100}%`,
           maxWidth: "100%",
         }}
-        className="relative w-[80.5%] transition-transform duration-1000  ease-linear"
+        className="relative  transition-transform duration-1000  ease-linear"
       >
         <div className="absolute -right-20  text-center font-bold text-responsive-num mt-5">
           <p
@@ -41,7 +41,7 @@ export default function ProgressBar() {
           <p>
             {" "}
             <span className="font-sans">₹</span>
-            {isExceeded ? `${(totalAmount / 1000).toFixed(2)}k`:totalAmount }
+            {isExceeded ? `${(totalAmount / 1000).toFixed(2)}k`: totalAmount }
           </p>
         </div>
       </div>
