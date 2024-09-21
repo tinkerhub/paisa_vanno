@@ -12,8 +12,8 @@ const config: Config = {
         tv: "2200px",
       },
       fontSize: {
-        "responsive-h1": "clamp(1.875rem, 2vw + 1rem, 9rem)", 
-        "responsive-h2": "clamp(1rem, 1vw + 0.7rem, 5rem)",
+        "responsive-h1": "clamp(1.875rem, 2.5vw + 1rem, 9rem)", 
+        "responsive-h2": "clamp(1rem, 1.5vw + 0.7rem, 9rem)",
         "responsive-num": "clamp(2rem, 2vw + 2rem, 9rem)",
       },
       colors: {
