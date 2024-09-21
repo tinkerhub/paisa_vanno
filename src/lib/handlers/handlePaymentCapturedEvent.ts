@@ -17,7 +17,7 @@ export async function handlePaymentCapturedEvent({
     // Extract Payment Entity
     const payment = body.payload.payment.entity;
     // get Amount and Payment id
-    const { amount, id: paymentId } = payment.amount;
+    const { amount, id: paymentId } = payment;
 
     let createEventRetryLoop = DATABASE_CREATE_RETRY_LOOP_STARTS_FROM;
     let createEventFlag = false;
