@@ -91,14 +91,15 @@ export function PaymentProvider({
           data.push(NewPayments[0]);
           return data;
         });
+        if (Conff.current) {
+          Conff.current?.shoot();
+        }
         toast.success(`New Donor, ₹${NewPayments[0]?.recievedAmount}`, {
           icon: `🎉`,
           duration: 2000,
           className: "text-2xl",
         });
-        if (Conff.current) {
-          Conff.current?.shoot();
-        }
+
         setNewPayments((prev) => {
           prev.shift();
           return [...prev];

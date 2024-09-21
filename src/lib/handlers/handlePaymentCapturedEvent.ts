@@ -2,7 +2,10 @@ import { updateEventToSucess, UpdateFailedCount } from "@/data/dto/events";
 import { Events } from "@prisma/client";
 import { CreatePaymentRecieved } from "@/data/dto/Payment";
 import { NextResponse } from "next/server";
-import { DATABASE_CREATE_RETRY_LOOP_STARTS_FROM, MAX_DATABASE_CREATE_RETRY_LOOP } from "@/constants/handlers/Events";
+import {
+  DATABASE_CREATE_RETRY_LOOP_STARTS_FROM,
+  MAX_DATABASE_CREATE_RETRY_LOOP,
+} from "@/constants/handlers/Events";
 type IhandlePaymentCapturedEvent = {
   event: Events;
   body: any;
@@ -21,29 +24,24 @@ export async function handlePaymentCapturedEvent({
     let createEventRetryLoop = DATABASE_CREATE_RETRY_LOOP_STARTS_FROM;
     let createEventFlag = false;
     //Retry loop upto Const.
-    while (
-      createEventRetryLoop <= MAX_DATABASE_CREATE_RETRY_LOOP &&
-      !createEventFlag
-    ) {
-      try {
-        // Insert the payment into database or throw the error
-        console.log("INFO: Creating Payment Recieved");
-        let isCreated = await CreatePaymentRecieved({
-          amount,
-          paymentId,
-        });
 
-        if (!isCreated) {
-          console.log("PAYMENT SCHEMA FAILED TO CREATE");
-          throw new Error("Failed to created ");
-        }
+    try {
+      // Insert the payment into database or throw the error
+      console.log("INFO: Creating Payment Recieved");
+      let isCreated = await CreatePaymentRecieved({
+        amount,
+        paymentId,
+      });
+
+      if (!isCreated) {
         console.log("PAYMENT SCHEMA FAILED TO CREATE");
-        createEventFlag = true;
-        continue;
-      } catch (error) {
-        createEventRetryLoop++;
+        throw new Error("Failed to created ");
       }
+      console.log("PAYMENT SCHEMA FAILED TO CREATE");
+    } catch (error) {
+      throw new Error("Failed to create playment")
     }
+
     console.log("INFO: UPDATING STATUS TO SUCCESS ");
     await updateEventToSucess({ id: event.id });
     return NextResponse.json({ success: true }, { status: 200 });
