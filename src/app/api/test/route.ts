@@ -2,7 +2,7 @@ import { db } from "@/db";
 import { nanoid } from "@reduxjs/toolkit";
 import { NextResponse } from "next/server";
 function getRandomNumber() {
-  return Math.floor(Math.random() * (10000 - 100 + 1)) + 100;
+  return Math.floor(Math.random() * (1000 - 100 + 1)) + 100;
 }
 export async function POST(req: NextResponse) {
   try {
