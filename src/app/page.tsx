@@ -1,12 +1,16 @@
-import MainPage from "@/components/firstDesign/MainPage";
-import Navbar from "@/components/firstDesign/Navbar";
+import HeadingText from "@/components/HeadingText";
+import Ellipse from "@/components/Ellipse";
+import ProgressBar from "@/components/ProgressBar";
+import TinkerTen from "@/components/TinkerTen";
 import React from "react";
 
-export default function Home() {
+export default function page() {
   return (
-    <>
-      <Navbar />
-      <MainPage />
-    </>
+    <div className="min-w-[100dvw]  max-h-[calc(100dvh-4rem)] overflow-hidden min-h-[calc(100dvh)]   relative">
+      <HeadingText />
+      <ProgressBar />
+      <Ellipse />
+      <TinkerTen />
+    </div>
   );
 }
