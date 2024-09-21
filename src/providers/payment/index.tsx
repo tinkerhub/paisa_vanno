@@ -1,29 +1,23 @@
 "use client";
 import { trpc } from "@/app/_trpc/client";
-import {
-  FETCH_INTERVAL,
-  INFINITE_QUERY_LIMIT,
-  REVALIDATE_INTERVAL,
-} from "@/constants/handlers/infinity";
-import { useAppDispatch, useAppSelector } from "@/hooks/store/reducer";
-import {
-  popConfityPayments,
-  setAwaitedUniqueConfityPayments,
-  SetAwaitingConfitiPayment,
-  SetAwaitingConfitiPayments,
-} from "@/lib/feature/PaymentSlice";
+import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
+
+import { useAppDispatch } from "@/hooks/store/reducer";
 import { TPaymentExcludedTimeStamp } from "@/types";
 import { Payments } from "@prisma/client";
 import React, { createContext, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { TConductorInstance } from "react-canvas-confetti/dist/types";
+import { SUBSCRIPTION_STARTED_AT } from "@/constants/handlers/infinity";
 
 type PaymentState = {
   totalAmount: number;
+  totalSubscribers: number;
 };
 
 export const PaymentContext = createContext<PaymentState>({
   totalAmount: 0,
+  totalSubscribers: 40,
 });
 
 export function PaymentProvider({
@@ -34,7 +28,13 @@ export function PaymentProvider({
   InitialPaymentData: Payments | null;
 }) {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [showConfetti, setshowConfetti] = useState(false);
+  const Conff = useRef<TConductorInstance | null>(null);
   const confityRef = useRef<NodeJS.Timeout | null>(null);
+  useEffect(() => {
+    setshowConfetti(false);
+  }, [showConfetti, setshowConfetti]);
+
   const [playedPaymentsList, setPlayedPaymentsList] = useState<
     TPaymentExcludedTimeStamp[]
   >([]);
@@ -83,8 +83,6 @@ export function PaymentProvider({
     };
   }, [data]);
 
-  const dispatch = useAppDispatch();
-
   useEffect(() => {
     confityRef.current = setInterval(() => {
       if (NewPayments.length) {
@@ -93,7 +91,13 @@ export function PaymentProvider({
           data.push(NewPayments[0]);
           return data;
         });
-        toast.success(`Pop Confitty now!!, ${NewPayments[0]?.recievedAmount}`);
+        toast.success(`New Donor, ₹${NewPayments[0]?.recievedAmount}`, {
+          icon: `🎉`,
+          duration: 2000,
+        });
+        if (Conff.current) {
+          Conff.current?.shoot();
+        }
         setNewPayments((prev) => {
           prev.shift();
           return [...prev];
@@ -108,7 +112,24 @@ export function PaymentProvider({
   }, [NewPayments]);
 
   return (
-    <PaymentContext.Provider value={{ totalAmount: data?.totalAmount ?? 0 }}>
+    <PaymentContext.Provider
+      value={{ totalAmount: data?.totalAmount ?? 0, totalSubscribers: data?.totalCurrentSubscribers ?? SUBSCRIPTION_STARTED_AT }}
+    >
+      <div className="absolute top-0 z-50">
+        <Fireworks
+          decorateOptions={(deco) => {
+            let data = deco;
+            data.particleCount = 150;
+            return data;
+          }}
+          onInit={({ conductor, confetti }) => {
+            Conff.current = conductor;
+          }}
+          globalOptions={{
+            useWorker: true,
+          }}
+        />
+      </div>
       {children}
     </PaymentContext.Provider>
   );

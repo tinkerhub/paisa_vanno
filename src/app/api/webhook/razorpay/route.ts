@@ -76,6 +76,7 @@ export async function POST(request: NextRequest) {
       createEventFlag = true;
       continue;
     } catch (error) {
+      console.log(error)
       createEventRetryLoop++;
     }
   }
@@ -92,6 +93,7 @@ export async function POST(request: NextRequest) {
       }
     }
   } catch (error) {
+    console.log(error)
     if (DbEvent?.id) {
       await UpdateFailedCount(DbEvent.id);
       return NextResponse.json({ success: true }, { status: 200 });

@@ -6,6 +6,7 @@ import StoreProvider from "@/providers/redux/StoreProvider";
 import { Toaster } from "react-hot-toast";
 import { PaymentProvider } from "@/providers/payment";
 import { db } from "@/db";
+import { ConfettieProvider } from "@/components/firstDesign/ConfettiTest";
 
 const DMsans = DM_Sans({ subsets: ["latin"] });
 
@@ -26,15 +27,17 @@ export default async function RootLayout({
   });
   return (
     <html lang="en">
-      <body className={DMsans.className}>
-        <Providers>
-          <StoreProvider>
-            <PaymentProvider InitialPaymentData={InitialPaymentData}>
-              <Toaster />
-              {children}
-            </PaymentProvider>
-          </StoreProvider>
-        </Providers>
+      <body className={`${DMsans.className} overflow-hidden`}>
+        <ConfettieProvider>
+          <Providers>
+            <StoreProvider>
+              <PaymentProvider InitialPaymentData={InitialPaymentData}>
+                <Toaster />
+                {children}
+              </PaymentProvider>
+            </StoreProvider>
+          </Providers>
+        </ConfettieProvider>
       </body>
     </html>
   );
