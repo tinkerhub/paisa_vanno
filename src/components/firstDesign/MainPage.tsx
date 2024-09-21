@@ -2,6 +2,7 @@ import { data } from "@/constants";
 import React from "react";
 import ProgressBar from "./ProgressBar";
 import SubscribersCount from "./SubscribersCount";
+// import ConfettiTest from "./ConfettiTest";
 
 export default function MainPage() {
   const { title, subtitle } = data;
