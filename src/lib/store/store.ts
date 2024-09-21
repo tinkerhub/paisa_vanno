@@ -1,15 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
+import PaymentSlice from "@/lib/feature/PaymentSlice";
 
 export const makeStore = () => {
   return configureStore({
     devTools: true,
     reducer: {
+      paymentSlice: PaymentSlice,
     },
   });
 };
 
 // Infer the type of makeStore
-
 export type AppDispatch = AppStore["dispatch"];
 
 export type AppStore = ReturnType<typeof makeStore>;
