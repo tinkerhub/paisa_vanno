@@ -14,8 +14,7 @@ export const appRouter = router({
     )
     .query(async ({ ctx, input }) => {
       const { cursor } = input;
-      const limit = input.limit ?? INFINITE_QUERY_LIMIT;
-
+      let page = cursor ?? 1;
       const totalAmount = await db.payments.aggregate({
         _sum: {
           recievedAmount: true,
@@ -23,8 +22,17 @@ export const appRouter = router({
       });
 
       const data = await db.payments.findMany({
-        cursor: cursor ? { id: cursor } : undefined,
-        take: 2,
+        cursor: {
+          id: page,
+        },
+        take: INFINITE_QUERY_LIMIT + 1,
+        select: {
+          id: true,
+          paymentId: true,
+          recievedAmount: true,
+          email: true,
+          name: true,
+        },
       });
       if (!data.length) {
         throw new TRPCError({
@@ -32,12 +40,10 @@ export const appRouter = router({
           message: "Something went wrong",
         });
       }
-
-      let nextCursor: typeof cursor | undefined = undefined;
-
-      if (data.length > limit) {
+      let nextCursor = page;
+      if (data.length > INFINITE_QUERY_LIMIT) {
         const nextItem = data.pop();
-        nextCursor = nextItem?.id;
+        nextCursor = nextItem?.id ? nextItem?.id : page;
       }
       return {
         response: data,

@@ -9,11 +9,16 @@ export default function ProgressBar() {
   const { currCount, totalCount } = displayData;
   const { totalAmount } = useContext(PaymentContext);
   return (
-    <div className="bg-[#DADADA] h-20 tv:h-52 w-[90%] mx-auto rounded-full mt-10  relative">
-      <div className="bg-[#004BFF] h-20 tv:h-52 w-[80.5%] rounded-full"></div>
+    <div className="bg-[#DADADA] overflow-hidden h-20 tv:h-52 w-[90%] mx-auto rounded-full mt-10  relative">
+      <div
+        style={{
+          width: `${(totalAmount / totalCount) * 100}%`,
+        }}
+        className="bg-[#004BFF] h-20 tv:h-52  rounded-full"
+      ></div>
       <div className="absolute right-0 -top-40 tv:-top-80 text-center text-responsive-num font-bold">
         <p className="text-7xl tv:text-9xl">⛳️</p>
-        <p>₹{totalCount}k</p>
+        <p>₹{totalCount / 1000}k</p>
       </div>
 
       <div className="absolute right-56 tv:right-[16%] tv:top-60 text-center font-bold text-responsive-num">

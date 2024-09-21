@@ -21,7 +21,7 @@ export default async function RootLayout({
 }>) {
   const InitialPaymentData = await db.payments.findFirst({
     orderBy: {
-      id: "asc",
+      id: "desc",
     },
   });
   return (

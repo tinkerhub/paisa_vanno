@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import PackageSlice from "@/lib/feature/PaymentSlice";
+import PaymentSlice from "@/lib/feature/PaymentSlice";
 
 export const makeStore = () => {
   return configureStore({
     devTools: true,
     reducer: {
-      paymentSlice: PackageSlice,
+      paymentSlice: PaymentSlice,
     },
   });
 };

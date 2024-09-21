@@ -13,5 +13,5 @@ export const displayData = {
   subtitle:
     "currently we have 40 recurring donors, we want you to be the 41st.",
   currCount: "780",
-  totalCount: 100,
+  totalCount: 100 * 1000,
 };
