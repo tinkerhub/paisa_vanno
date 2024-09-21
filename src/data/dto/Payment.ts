@@ -5,7 +5,7 @@ type ICreateOrThrowPaymentRecieved = {
   paymentId: string;
   amount: number;
 };
-export async function CreateOrThrowPaymentRecieved({
+export async function CreatePaymentRecieved({
   amount,
   paymentId,
 }: ICreateOrThrowPaymentRecieved) {
