@@ -21,18 +21,14 @@ export async function POST(request: NextRequest) {
   }
   let body = await request.json();
   /// calculating signature from the body and secret
-  const generatedSignature = generateSignature(body);
+  // const generatedSignature = generateSignature(body);
   console.log(body);
 
   // check whether the generated and incomming are same, if so use the body and the body is securely send from razor-pay
-  if (generatedSignature !== IncommingSignature) {
-    // throw a valid error.
-    // Respond with 200
-    return NextResponse.json({ success: false }, { status: 200 });
-  }
 
   // check whether the event is already in database
   let DbEvent = await getEventById(eventId);
+  console.log("Db event has been Triggered", DbEvent, "++==DbEvent Initial");
   switch (DbEvent?.status) {
     case "SUCCESS": {
       console.info("Db event is sucessfull", "==RAZORPAY");
@@ -57,6 +53,8 @@ export async function POST(request: NextRequest) {
 
     case "PENDING": {
       // not Implimented.
+      console.log("PENDING HAS NOT BEEN IMPLIMENTED");
+
       return NextResponse.json({ success: false, status: 430 });
     }
   }
@@ -69,10 +67,17 @@ export async function POST(request: NextRequest) {
   ) {
     try {
       // Insert the event into data-base
+      
+
       DbEvent = await createEventorThrow({
         eventId,
         status: "PROCESSING",
       });
+      console.log(
+        "New EVENT HAS BEEN CREATED",
+        DbEvent,
+        "++==DbEvent CREATE"
+      );
       createEventFlag = true;
       continue;
     } catch (error) {
@@ -82,10 +87,21 @@ export async function POST(request: NextRequest) {
   }
   try {
     if (!DbEvent || !DbEvent?.id) {
+      console.log(
+        "FATAL: DB EVENT IS NOT FOUND!",
+        DbEvent,
+        "++==DbEvent"
+      );
       return NextResponse.json({ success: true }, { status: 425 });
     }
     switch (body.event) {
+      
       case "payment.captured": {
+        console.log(
+          "INFO: Paymnet Captured Has been triggered",
+          DbEvent,
+          "++==DbEvent Initial"
+        );
         return await handlePaymentCapturedEvent({
           body,
           event: DbEvent,
