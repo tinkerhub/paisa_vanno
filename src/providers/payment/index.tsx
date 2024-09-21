@@ -94,6 +94,7 @@ export function PaymentProvider({
         toast.success(`New Donor, ₹${NewPayments[0]?.recievedAmount}`, {
           icon: `🎉`,
           duration: 2000,
+          className: "text-2xl",
         });
         if (Conff.current) {
           Conff.current?.shoot();
@@ -113,7 +114,11 @@ export function PaymentProvider({
 
   return (
     <PaymentContext.Provider
-      value={{ totalAmount: data?.totalAmount ?? 0, totalSubscribers: data?.totalCurrentSubscribers ?? SUBSCRIPTION_STARTED_AT }}
+      value={{
+        totalAmount: data?.totalAmount ?? 0,
+        totalSubscribers:
+          data?.totalCurrentSubscribers ?? SUBSCRIPTION_STARTED_AT,
+      }}
     >
       <div className="absolute top-0 z-50">
         <Fireworks
