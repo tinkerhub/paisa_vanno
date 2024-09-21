@@ -1,9 +1,7 @@
 import {
-  createEventorThrow,
   updateEventToSucess,
   UpdateFailedCount,
 } from "@/data/dto/events";
-import { TRPCError } from "@trpc/server";
 import { Events } from "@prisma/client";
 import { CreatePaymentRecieved } from "@/data/dto/Payment";
 import { NextResponse } from "next/server";

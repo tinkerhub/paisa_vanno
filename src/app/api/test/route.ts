@@ -1,19 +1,14 @@
 import { db } from "@/db";
-import { nanoid } from "@reduxjs/toolkit";
-import { NextResponse } from "next/server";
 function getRandomNumber() {
-  return Math.floor(Math.random() * (1000 - 100 + 1)) + 100;
+  return Math.floor(Math.random() * (10000 - 100 + 1)) + 100;
 }
-export async function POST(req: NextResponse) {
+export async function POST() {
   try {
-    const data = await db.payments.create({
+    await db.payments.create({
       data: {
         recievedAmount: getRandomNumber(),
-        paymentId: nanoid(),
+        paymentId: `hello+world ${getRandomNumber()}`
       },
     });
-    return NextResponse.json({ message: data }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ message: "Recieved" }, { status: 400 });
-  }
+  } catch (error) {}
 }
